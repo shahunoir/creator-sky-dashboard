@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Sky Dashboard ☀️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Serif+Display:ital@0;1&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"DM Serif Display"', 'serif'],
+                        hand: ['Caveat', 'cursive'],
+                        sans: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        skyBlue: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                        },
+                        sunYellow: {
+                            300: '#fef08a',
+                            400: '#facc15',
+                            500: '#eab308',
+                        },
+                        sunOrange: {
+                            400: '#fb923c',
+                            500: '#f97316',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 45%, #38bdf8 100%);
+            min-height: 100vh;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        /* Animated Sky Elements */
+        .sun-glow {
+            filter: drop-shadow(0 0 35px rgba(251, 191, 36, 0.75)) drop-shadow(0 0 65px rgba(249, 115, 22, 0.4));
+            animation: pulse-sun 6s ease-in-out infinite alternate;
+        }
+        @keyframes pulse-sun {
+            0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.7)); }
+            100% { transform: scale(1.04) rotate(4deg); filter: drop-shadow(0 0 50px rgba(251, 191, 36, 0.9)) drop-shadow(0 0 80px rgba(249, 115, 22, 0.5)); }
+        }
+
+        .ray-rotate {
+            animation: spin-rays 60s linear infinite;
+            transform-origin: center;
+        }
+        @keyframes spin-rays {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .floating-cloud-bg {
+            animation: float-cloud 24s ease-in-out infinite alternate;
+        }
+        .floating-cloud-bg-reverse {
+            animation: float-cloud-rev 28s ease-in-out infinite alternate;
+        }
+        @keyframes float-cloud {
+            0% { transform: translateX(-15px) translateY(0px); }
+            50% { transform: translateX(20px) translateY(-10px); }
+            100% { transform: translateX(-15px) translateY(0px); }
+        }
+        @keyframes float-cloud-rev {
+            0% { transform: translateX(20px) translateY(0px); }
+            50% { transform: translateX(-15px) translateY(-12px); }
+            100% { transform: translateX(20px) translateY(0px); }
+        }
+
+        /* Glass Cloud Cards */
+        .cloud-card {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 10px 30px -5px rgba(14, 165, 233, 0.18), 0 4px 12px rgba(0, 0, 0, 0.03);
+            border-radius: 1.75rem;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .cloud-card:hover {
+            box-shadow: 0 16px 36px -4px rgba(14, 165, 233, 0.26), 0 6px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        .cloud-card-solid {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 12px 32px -4px rgba(14, 165, 233, 0.2);
+            border-radius: 1.75rem;
+        }
+
+        /* Sparkle & Animation Effects */
+        .sparkle-pop {
+            animation: sparkle 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes sparkle {
+            0% { transform: scale(0.6) rotate(-10deg); opacity: 0.5; }
+            50% { transform: scale(1.25) rotate(15deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.6);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(14, 165, 233, 0.8);
+        }
+
+        /* Custom Platform Checkboxes */
+        .platform-checkbox input:checked + div {
+            background-color: #0ea5e9;
+            border-color: #0284c7;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35);
+        }
+
+        .circular-chart {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 250px;
+        }
+        .circle-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.5);
+            stroke-width: 3.8;
+        }
+        .circle {
+            fill: none;
+            stroke-width: 3.8;
+            stroke-linecap: round;
+            transition: stroke-dasharray 1s ease-in-out;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col justify-between pb-24 md:pb-8">
+
+    <!-- SKY DEPLOYMENT LAYER (Background Visual Depth) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <!-- Sun Rays Overlay -->
+        <div class="absolute -top-20 -right-20 w-[600px] h-[600px] opacity-40">
+            <svg viewBox="0 0 200 200" class="w-full h-full ray-rotate">
+                <g fill="#FDE047">
+                    <polygon points="100,10 108,90 190,100 108,110 100,190 92,110 10,100 92,90"/>
+                    <polygon points="100,10 108,90 190,100 108,110 100,190 92,110 10,100 92,90" transform="rotate(30 100 100)"/>
+                    <polygon points="100,10 108,90 190,100 108,110 100,190 92,110 10,100 92,90" transform="rotate(60 100 100)"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Floating Sky Clouds (Layer 2) -->
+        <div class="absolute top-12 left-[5%] opacity-70 floating-cloud-bg">
+            <svg width="220" height="120" viewBox="0 0 24 24" fill="white"><path d="M6.5 20C4.01 20 2 17.99 2 15.5C2 13.24 3.66 11.37 5.86 11.05C6.44 7.63 9.42 5 13 5C16.98 5 20.24 7.93 20.9 11.75C22.68 12.39 24 14.1 24 16.12C24 18.82 21.82 21 19.12 21L6.5 20Z" opacity="0.65"/></svg>
+        </div>
+        <div class="absolute top-48 right-[10%] opacity-60 floating-cloud-bg-reverse">
+            <svg width="280" height="150" viewBox="0 0 24 24" fill="white"><path d="M6.5 20C4.01 20 2 17.99 2 15.5C2 13.24 3.66 11.37 5.86 11.05C6.44 7.63 9.42 5 13 5C16.98 5 20.24 7.93 20.9 11.75C22.68 12.39 24 14.1 24 16.12C24 18.82 21.82 21 19.12 21L6.5 20Z" opacity="0.8"/></svg>
+        </div>
+        <div class="absolute bottom-20 left-[15%] opacity-50 floating-cloud-bg">
+            <svg width="320" height="160" viewBox="0 0 24 24" fill="white"><path d="M6.5 20C4.01 20 2 17.99 2 15.5C2 13.24 3.66 11.37 5.86 11.05C6.44 7.63 9.42 5 13 5C16.98 5 20.24 7.93 20.9 11.75C22.68 12.39 24 14.1 24 16.12C24 18.82 21.82 21 19.12 21L6.5 20Z" opacity="0.75"/></svg>
+        </div>
+
+        <!-- Sparkles Overlay Layer -->
+        <div class="absolute top-1/4 left-1/3 text-amber-200 opacity-80 animate-pulse">✨</div>
+        <div class="absolute top-1/3 right-1/4 text-white opacity-90 animate-ping" style="animation-duration: 4s;">✦</div>
+        <div class="absolute top-2/3 left-10 text-yellow-100 opacity-70 animate-pulse" style="animation-duration: 3s;">✨</div>
+        <div class="absolute bottom-1/3 right-12 text-white opacity-80 animate-pulse" style="animation-duration: 5s;">☀️</div>
+    </div>
+
+    <!-- MAIN WRAPPER CONTAINER -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+
+        <!-- HEADER HERO SKY BANNER -->
+        <header class="relative mb-8 cloud-card p-6 md:p-8 flex flex-col md:flex-row items-center justify-between overflow-hidden">
+            <!-- Decorative Inner Glow & Sun -->
+            <div class="absolute -right-10 -top-12 pointer-events-none">
+                <svg width="220" height="220" viewBox="0 0 100 100" class="sun-glow">
+                    <circle cx="50" cy="50" r="28" fill="url(#sun-gradient)" />
+                    <defs>
+                        <radialGradient id="sun-gradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                            <stop offset="0%" stop-color="#FEF08A" />
+                            <stop offset="65%" stop-color="#FACC15" />
+                            <stop offset="100%" stop-color="#FB923C" />
+                        </radialGradient>
+                    </defs>
+                    <!-- Small Sun Details -->
+                    <circle cx="50" cy="50" r="34" fill="none" stroke="#FDE047" stroke-width="1.5" stroke-dasharray="3 3" class="ray-rotate" />
+                </svg>
+            </div>
+
+            <div class="z-10 text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100/80 border border-amber-300/60 text-amber-800 text-xs font-bold tracking-wide mb-3 shadow-sm">
+                    <i data-lucide="sun" class="w-4 h-4 text-amber-500 animate-spin" style="animation-duration: 12s;"></i>
+                    <span id="current-date-str">Loading date...</span>
+                </div>
+                <h1 class="font-serif text-3xl md:text-5xl text-sky-950 font-bold tracking-tight mb-2">
+                    Hello, creator <span class="inline-block hover:rotate-12 transition-transform duration-300">☀️</span>
+                </h1>
+                <p class="font-hand text-xl md:text-2xl text-sky-800 font-semibold">
+                    "Let's make something worth remembering today."
+                </p>
+            </div>
+
+            <!-- Quick Data Management & Export Trigger -->
+            <div class="mt-4 md:mt-0 z-10 flex flex-wrap gap-2 justify-center">
+                <button onclick="exportUserData()" class="px-3.5 py-2 rounded-xl bg-white/80 hover:bg-white text-sky-800 text-xs font-bold border border-sky-200 transition shadow-sm flex items-center gap-1.5">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Data
+                </button>
+                <button onclick="triggerImport()" class="px-3.5 py-2 rounded-xl bg-white/80 hover:bg-white text-sky-800 text-xs font-bold border border-sky-200 transition shadow-sm flex items-center gap-1.5">
+                    <i data-lucide="upload" class="w-3.5 h-3.5"></i> Import Data
+                </button>
+                <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importUserData(event)">
+                <button onclick="openResetModal()" class="px-3 py-2 rounded-xl bg-rose-100/80 hover:bg-rose-200 text-rose-700 text-xs font-bold border border-rose-200 transition shadow-sm flex items-center gap-1">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT (SIDEBAR NAVIGATION + CONTENT PANELS) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- NAVIGATION SIDEBAR (DESKTOP) -->
+            <aside class="hidden lg:block lg:col-span-3 sticky top-6 z-20">
+                <div class="cloud-card-solid p-4 space-y-2">
+                    <div class="px-4 py-3 border-b border-sky-100 mb-2">
+                        <span class="text-xs font-extrabold uppercase tracking-wider text-sky-400">Navigation</span>
+                    </div>
+                    <nav class="space-y-1.5" id="desktop-nav">
+                        <button onclick="switchTab('dashboard')" data-tab="dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition text-sky-900 bg-sky-100/80 shadow-sm">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5 text-amber-500"></i> ☀️ Dashboard
+                        </button>
+                        <button onclick="switchTab('calendar')" data-tab="calendar" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition text-slate-600 hover:bg-white/60">
+                            <i data-lucide="calendar" class="w-5 h-5 text-sky-500"></i> 📅 Calendar
+                        </button>
+                        <button onclick="switchTab('content')" data-tab="content" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition text-slate-600 hover:bg-white/60">
+                            <i data-lucide="check-square" class="w-5 h-5 text-emerald-500"></i> 📝 Content Tracker
+                        </button>
+                        <button onclick="switchTab('ideas')" data-tab="ideas" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition text-slate-600 hover:bg-white/60">
+                            <i data-lucide="lightbulb" class="w-5 h-5 text-amber-400"></i> 💡 Sky Ideas
+                        </button>
+                        <button onclick="switchTab('diary')" data-tab="diary" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition text-slate-600 hover:bg-white/60">
+                            <i data-lucide="book-open" class="w-5 h-5 text-indigo-400"></i> 📖 Sky Diary
+                        </button>
+                        <button onclick="switchTab('progress')" data-tab="progress" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition text-slate-600 hover:bg-white/60">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-violet-500"></i> 📊 Progress & Stats
+                        </button>
+                        <button onclick="switchTab('profile')" data-tab="profile" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition text-slate-600 hover:bg-white/60">
+                            <i data-lucide="user" class="w-5 h-5 text-rose-400"></i> 👤 Profile
+                        </button>
+                    </nav>
+
+                    <!-- QUICK CREATOR MINI STATS IN SIDEBAR -->
+                    <div class="mt-6 pt-4 border-t border-sky-100 px-3">
+                        <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/70 rounded-2xl p-4 text-center relative overflow-hidden">
+                            <i data-lucide="flame" class="w-8 h-8 text-amber-500 mx-auto mb-1 animate-bounce"></i>
+                            <div class="font-extrabold text-2xl text-amber-900" id="sidebar-streak">5 Days</div>
+                            <div class="text-xs font-semibold text-amber-700/80">Creator Streak 🔥</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- VIEW CONTAINER -->
+            <main class="col-span-1 lg:col-span-9 space-y-8">
+
+                <!-- 1. DASHBOARD VIEW -->
+                <div id="view-dashboard" class="tab-view space-y-8">
+                    
+                    <!-- TOP METRICS GRID -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="cloud-card p-5 text-center flex flex-col items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 mb-2">
+                                <i data-lucide="target" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Monthly Goal</span>
+                            <span class="font-bold text-xl text-slate-800 mt-1" id="dash-goal-text">17 / 25</span>
+                        </div>
+
+                        <div class="cloud-card p-5 text-center flex flex-col items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-2">
+                                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Completed</span>
+                            <span class="font-bold text-xl text-slate-800 mt-1" id="dash-completed-count">17</span>
+                        </div>
+
+                        <div class="cloud-card p-5 text-center flex flex-col items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-500 mb-2">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Ideas</span>
+                            <span class="font-bold text-xl text-slate-800 mt-1" id="dash-ideas-count">12</span>
+                        </div>
+
+                        <div class="cloud-card p-5 text-center flex flex-col items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 mb-2">
+                                <i data-lucide="loader" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">In Progress</span>
+                            <span class="font-bold text-xl text-slate-800 mt-1" id="dash-in-progress-count">5</span>
+                        </div>
+                    </div>
+
+                    <!-- CENTERPIECE: THIS MONTH UNDER THE SUN -->
+                    <div class="cloud-card p-6 md:p-8 relative overflow-hidden">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                            <div class="text-center sm:text-left space-y-3 max-w-md">
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-800 text-xs font-bold">
+                                    <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i> Sunshine Centerpiece
+                                </div>
+                                <h2 class="font-serif text-2xl md:text-3xl text-sky-950 font-bold">This Month Under the Sun ☀️</h2>
+                                <p class="text-slate-600 text-sm leading-relaxed">
+                                    Every item created brings your sunshine closer to full brightness. Keep creating consistently!
+                                </p>
+                                <div class="pt-2 flex items-center gap-3">
+                                    <button onclick="editGoalModal()" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold shadow-md shadow-sky-500/20 transition flex items-center gap-1.5">
+                                        <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Set Target Goal
+                                    </button>
+                                    <span class="text-xs font-bold text-slate-500" id="goal-target-subtext">Goal: 25 Posts</span>
+                                </div>
+                            </div>
+
+                            <!-- Circular Sunshine Progress Indicator -->
+                            <div class="relative w-44 h-44 flex items-center justify-center">
+                                <svg viewBox="0 0 36 36" class="circular-chart w-full h-full">
+                                    <path class="circle-bg" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path id="sun-progress-circle" class="circle" stroke="url(#progress-sun-grad)" stroke-dasharray="68, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <defs>
+                                        <linearGradient id="progress-sun-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#FACC15" />
+                                            <stop offset="100%" stop-color="#F97316" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                    <span class="font-serif text-3xl font-extrabold text-amber-950" id="sun-percentage-text">68%</span>
+                                    <span class="text-[10px] font-bold tracking-wider text-amber-700 uppercase" id="sun-fraction-text">17/25 POSTS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TWO-COLUMN GRID: DAILY CREATOR NOTE & SUNSHINE MESSAGE -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Daily Creator Note -->
+                        <div class="cloud-card p-6 flex flex-col justify-between relative">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <h3 class="font-serif text-xl text-sky-950 font-bold flex items-center gap-2">
+                                        <span>🌼</span> A little note to myself
+                                    </h3>
+                                    <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full" id="note-saved-indicator">Auto-saved</span>
+                                </div>
+                                <textarea id="daily-note-input" oninput="saveDailyNote()" rows="4" placeholder="Today I want to finish my physics carousel..." class="w-full bg-white/60 border border-sky-100 rounded-2xl p-3.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 placeholder-slate-400 resize-none font-hand text-lg"></textarea>
+                            </div>
+                            <p class="text-[11px] text-slate-400 mt-2 text-right">Persisted safely to local browser storage.</p>
+                        </div>
+
+                        <!-- Daily Sunshine Motivational Quote -->
+                        <div class="cloud-card p-6 flex flex-col justify-between bg-gradient-to-br from-amber-50/90 to-sky-50/90 border-amber-200/50">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <h3 class="font-serif text-xl text-amber-950 font-bold flex items-center gap-2">
+                                        <span>☀️</span> Sunshine for Today
+                                    </h3>
+                                    <button onclick="refreshSunshineQuote()" class="text-amber-600 hover:text-amber-800 transition">
+                                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                                <blockquote class="font-hand text-2xl text-amber-900 leading-snug my-2" id="sunshine-quote">
+                                    "Small progress is still progress."
+                                </blockquote>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs font-bold text-amber-700/80 mt-4">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i> Keep glowing, creator!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QUICK CREATION TOOL -->
+                    <div class="cloud-card p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="font-serif text-2xl text-sky-950 font-bold">Today's Quick Content Entry ✍️</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Quickly register what you're creating today</p>
+                            </div>
+                            <button onclick="switchTab('content')" class="text-xs font-bold text-sky-600 hover:text-sky-800 flex items-center gap-1">
+                                View All <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+
+                        <form id="quick-content-form" onsubmit="handleQuickAddContent(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Content Title</label>
+                                    <input type="text" id="qc-title" required placeholder="e.g. History of Vectors" class="w-full bg-white/80 border border-sky-100 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:ring-2 focus:ring-sky-400 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Topic / Subject</label>
+                                    <input type="text" id="qc-topic" required placeholder="e.g. Physics" class="w-full bg-white/80 border border-sky-100 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:ring-2 focus:ring-sky-400 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Status</label>
+                                    <select id="qc-status" class="w-full bg-white/80 border border-sky-100 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:ring-2 focus:ring-sky-400 outline-none">
+                                        <option value="💡 Idea">💡 Idea</option>
+                                        <option value="✍️ Writing">✍️ Writing</option>
+                                        <option value="🎨 Designing">🎨 Designing</option>
+                                        <option value="🎬 Creating">🎬 Creating</option>
+                                        <option value="📋 Ready to Post">📋 Ready to Post</option>
+                                        <option value="☀️ Published" selected>☀️ Published</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Platform Selection Checklist -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Target Platforms</label>
+                                <div class="flex flex-wrap gap-2.5" id="qc-platforms-container">
+                                    <!-- Dynamic Checkbox Badges -->
+                                </div>
+                            </div>
+
+                            <div class="pt-2 flex justify-end">
+                                <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold text-sm rounded-xl shadow-md shadow-sky-500/25 transition flex items-center gap-2">
+                                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Content Entry
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                <!-- 2. CONTENT CALENDAR VIEW -->
+                <div id="view-calendar" class="tab-view space-y-6 hidden">
+                    <div class="cloud-card p-6 md:p-8">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h2 class="font-serif text-3xl text-sky-950 font-bold">Sky Planner & Calendar 📅</h2>
+                                <p class="text-xs text-slate-500 mt-1">Track your content activity month by month</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button onclick="changeMonth(-1)" class="p-2 bg-white rounded-xl shadow-sm text-sky-800 hover:bg-sky-50 border border-sky-100">
+                                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                                </button>
+                                <span class="font-serif text-xl font-bold text-sky-900 min-w-[140px] text-center" id="calendar-month-year">September 2026</span>
+                                <button onclick="changeMonth(1)" class="p-2 bg-white rounded-xl shadow-sm text-sky-800 hover:bg-sky-50 border border-sky-100">
+                                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                                </button>
+                                <button onclick="goToCurrentMonth()" class="px-3 py-2 bg-sky-100 hover:bg-sky-200 text-sky-800 text-xs font-bold rounded-xl border border-sky-200">
+                                    Today
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Grid -->
+                        <div class="grid grid-cols-7 gap-1.5 md:gap-2 text-center mb-2">
+                            <span class="text-xs font-extrabold text-sky-700 py-2">SUN</span>
+                            <span class="text-xs font-extrabold text-sky-700 py-2">MON</span>
+                            <span class="text-xs font-extrabold text-sky-700 py-2">TUE</span>
+                            <span class="text-xs font-extrabold text-sky-700 py-2">WED</span>
+                            <span class="text-xs font-extrabold text-sky-700 py-2">THU</span>
+                            <span class="text-xs font-extrabold text-sky-700 py-2">FRI</span>
+                            <span class="text-xs font-extrabold text-sky-700 py-2">SAT</span>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1.5 md:gap-2" id="calendar-days-grid">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Selected Day Modal/Details -->
+                    <div id="calendar-day-details" class="cloud-card p-6 hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-serif text-xl text-sky-950 font-bold" id="cal-selected-date-title">Content on September 16, 2026</h3>
+                            <button onclick="closeCalDetails()" class="text-slate-400 hover:text-slate-600">
+                                <i data-lucide="x" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div id="cal-selected-entries" class="space-y-3">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. CONTENT TRACKER VIEW -->
+                <div id="view-content" class="tab-view space-y-6 hidden">
+                    <div class="cloud-card p-6 md:p-8">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h2 class="font-serif text-3xl text-sky-950 font-bold">Content Tracker 📝</h2>
+                                <p class="text-xs text-slate-500 mt-1">Manage and view all creator posts across platforms</p>
+                            </div>
+                            <button onclick="openAddContentModal()" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> New Entry
+                            </button>
+                        </div>
+
+                        <!-- Filter Controls -->
+                        <div class="flex flex-wrap gap-3 mb-6">
+                            <input type="text" id="content-search" oninput="renderContentList()" placeholder="Search content title or topic..." class="bg-white/80 border border-sky-100 rounded-xl px-4 py-2 text-xs text-slate-800 focus:ring-2 focus:ring-sky-400 outline-none w-full sm:w-64">
+                            <select id="content-status-filter" onchange="renderContentList()" class="bg-white/80 border border-sky-100 rounded-xl px-3 py-2 text-xs text-slate-800 focus:ring-2 focus:ring-sky-400 outline-none">
+                                <option value="ALL">All Statuses</option>
+                                <option value="💡 Idea">💡 Idea</option>
+                                <option value="✍️ Writing">✍️ Writing</option>
+                                <option value="🎨 Designing">🎨 Designing</option>
+                                <option value="🎬 Creating">🎬 Creating</option>
+                                <option value="📋 Ready to Post">📋 Ready to Post</option>
+                                <option value="☀️ Published">☀️ Published</option>
+                            </select>
+                        </div>
+
+                        <!-- Content List Container -->
+                        <div id="content-list-container" class="space-y-3">
+                            <!-- Dynamic Content Entries -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. IDEAS UNDER THE SUN VIEW -->
+                <div id="view-ideas" class="tab-view space-y-6 hidden">
+                    <div class="cloud-card p-6 md:p-8">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h2 class="font-serif text-3xl text-sky-950 font-bold">Ideas Under the Sun ☀️💡</h2>
+                                <p class="text-xs text-slate-500 mt-1">Capture creative sparks before they float away</p>
+                            </div>
+                            <button onclick="openAddIdeaModal()" class="px-5 py-2.5 bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+                                <i data-lucide="lightbulb" class="w-4 h-4"></i> Save New Idea
+                            </button>
+                        </div>
+
+                        <div id="ideas-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Dynamic Idea Cards -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. SKY DIARY VIEW -->
+                <div id="view-diary" class="tab-view space-y-6 hidden">
+                    <div class="cloud-card p-6 md:p-8">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h2 class="font-serif text-3xl text-sky-950 font-bold">My Sky Diary ☁️📖</h2>
+                                <p class="text-xs text-slate-500 mt-1">Personal reflections, creator logs, and thoughts</p>
+                            </div>
+                            <button onclick="openAddDiaryModal()" class="px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+                                <i data-lucide="book-plus" class="w-4 h-4"></i> New Diary Entry
+                            </button>
+                        </div>
+
+                        <div class="mb-6">
+                            <input type="text" id="diary-search" oninput="renderDiaryList()" placeholder="Search diary logs..." class="bg-white/80 border border-sky-100 rounded-xl px-4 py-2 text-xs text-slate-800 focus:ring-2 focus:ring-sky-400 outline-none w-full sm:w-72">
+                        </div>
+
+                        <div id="diary-list" class="space-y-4">
+                            <!-- Dynamic Floating Journal Entries -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. PROGRESS & STATS VIEW -->
+                <div id="view-progress" class="tab-view space-y-6 hidden">
+                    <div class="cloud-card p-6 md:p-8">
+                        <h2 class="font-serif text-3xl text-sky-950 font-bold mb-2">My Creator Journey ✨</h2>
+                        <p class="text-xs text-slate-500 mb-6">Comprehensive analytics of your output and platform reach</p>
+
+                        <!-- Streak & Totals Summary -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                            <div class="bg-gradient-to-br from-amber-50 to-orange-100 border border-amber-200 rounded-2xl p-5 text-center">
+                                <i data-lucide="flame" class="w-8 h-8 text-amber-500 mx-auto mb-2"></i>
+                                <div class="text-3xl font-extrabold text-amber-950" id="prog-current-streak">5 Days</div>
+                                <div class="text-xs font-bold text-amber-800 mt-1">Current Creating Streak 🔥</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-sky-50 to-blue-100 border border-sky-200 rounded-2xl p-5 text-center">
+                                <i data-lucide="trophy" class="w-8 h-8 text-sky-500 mx-auto mb-2"></i>
+                                <div class="text-3xl font-extrabold text-sky-950" id="prog-longest-streak">7 Days</div>
+                                <div class="text-xs font-bold text-sky-800 mt-1">Longest Streak Record 🏆</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-emerald-50 to-teal-100 border border-emerald-200 rounded-2xl p-5 text-center">
+                                <i data-lucide="layers" class="w-8 h-8 text-emerald-500 mx-auto mb-2"></i>
+                                <div class="text-3xl font-extrabold text-emerald-950" id="prog-total-items">22</div>
+                                <div class="text-xs font-bold text-emerald-800 mt-1">Total Items Logged 📦</div>
+                            </div>
+                        </div>
+
+                        <!-- WHERE I SHOW UP PLATFORM DISTRIBUTION -->
+                        <div class="cloud-card p-6 bg-white/70">
+                            <h3 class="font-serif text-xl text-sky-950 font-bold mb-1 flex items-center gap-2">
+                                <span>🌍</span> Where I Show Up
+                            </h3>
+                            <p class="text-xs text-slate-500 mb-6">Automatic distribution of your published posts per platform</p>
+                            
+                            <div id="platform-stats-bars" class="space-y-4">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. PROFILE VIEW -->
+                <div id="view-profile" class="tab-view space-y-6 hidden">
+                    <div class="cloud-card p-6 md:p-8">
+                        <h2 class="font-serif text-3xl text-sky-950 font-bold mb-6">Creator Profile 👤</h2>
+
+                        <div class="flex flex-col md:flex-row items-center gap-8 bg-white/60 p-6 rounded-2xl border border-sky-100 mb-6">
+                            <!-- Avatar with Halo Ring -->
+                            <div class="relative group">
+                                <div class="w-28 h-28 rounded-full ring-4 ring-amber-300 ring-offset-4 overflow-hidden bg-sky-100 flex items-center justify-center shadow-lg">
+                                    <img id="profile-avatar-img" src="https://placehold.co/150x150/bae6fd/0369a1?text=Shahanaj" alt="Profile Avatar" class="w-full h-full object-cover">
+                                </div>
+                                <label for="avatar-input" class="absolute bottom-0 right-0 bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-full cursor-pointer shadow-md transition">
+                                    <i data-lucide="camera" class="w-4 h-4"></i>
+                                </label>
+                                <input type="file" id="avatar-input" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
+                            </div>
+
+                            <div class="space-y-2 text-center md:text-left flex-1">
+                                <h3 class="font-serif text-2xl text-sky-950 font-bold" id="profile-name-display">Shahanaj Jim</h3>
+                                <p class="text-xs font-bold text-sky-600" id="profile-handle-display">@shahufics</p>
+                                <p class="text-xs font-semibold text-slate-600" id="profile-bio-display">Writer • Creator • HSC Student</p>
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold mt-2" id="profile-status-display">
+                                    Status: Currently creating something new ☀️
+                                </div>
+                            </div>
+
+                            <button onclick="openEditProfileModal()" class="px-4 py-2 bg-white hover:bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-1.5">
+                                <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MOBILE BOTTOM NAVIGATION BAR -->
+    <div class="fixed bottom-3 left-3 right-3 lg:hidden z-40">
+        <div class="cloud-card-solid px-3 py-2 flex items-center justify-around shadow-2xl border border-white/90">
+            <button onclick="switchTab('dashboard')" data-tab-mobile="dashboard" class="mobile-nav-btn p-2 rounded-xl text-sky-600 bg-sky-100 flex flex-col items-center">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span class="text-[9px] font-bold mt-0.5">Home</span>
+            </button>
+            <button onclick="switchTab('calendar')" data-tab-mobile="calendar" class="mobile-nav-btn p-2 rounded-xl text-slate-500 flex flex-col items-center">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+                <span class="text-[9px] font-bold mt-0.5">Planner</span>
+            </button>
+            <button onclick="switchTab('content')" data-tab-mobile="content" class="mobile-nav-btn p-2 rounded-xl text-slate-500 flex flex-col items-center">
+                <i data-lucide="check-square" class="w-5 h-5"></i>
+                <span class="text-[9px] font-bold mt-0.5">Content</span>
+            </button>
+            <button onclick="switchTab('ideas')" data-tab-mobile="ideas" class="mobile-nav-btn p-2 rounded-xl text-slate-500 flex flex-col items-center">
+                <i data-lucide="lightbulb" class="w-5 h-5"></i>
+                <span class="text-[9px] font-bold mt-0.5">Ideas</span>
+            </button>
+            <button onclick="switchTab('diary')" data-tab-mobile="diary" class="mobile-nav-btn p-2 rounded-xl text-slate-500 flex flex-col items-center">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+                <span class="text-[9px] font-bold mt-0.5">Diary</span>
+            </button>
+            <button onclick="switchTab('profile')" data-tab-mobile="profile" class="mobile-nav-btn p-2 rounded-xl text-slate-500 flex flex-col items-center">
+                <i data-lucide="user" class="w-5 h-5"></i>
+                <span class="text-[9px] font-bold mt-0.5">Profile</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DIALOGS -->
+
+    <!-- EDIT GOAL MODAL -->
+    <div id="modal-edit-goal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sky-950/40 backdrop-blur-sm hidden">
+        <div class="cloud-card-solid max-w-sm w-full p-6 space-y-4">
+            <h3 class="font-serif text-xl font-bold text-sky-950">Set Monthly Goal ☀️</h3>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Target Number of Posts</label>
+                <input type="number" id="input-goal-number" min="1" max="100" class="w-full bg-white border border-sky-100 rounded-xl p-3 text-sm font-bold text-sky-900 focus:ring-2 focus:ring-sky-400 outline-none">
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeModal('modal-edit-goal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Cancel</button>
+                <button onclick="saveGoalTarget()" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold rounded-xl shadow-md">Save Goal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PROFILE MODAL -->
+    <div id="modal-edit-profile" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sky-950/40 backdrop-blur-sm hidden">
+        <div class="cloud-card-solid max-w-md w-full p-6 space-y-4">
+            <h3 class="font-serif text-xl font-bold text-sky-950">Edit Creator Profile 👤</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Display Name</label>
+                    <input type="text" id="edit-profile-name" class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Username / Handle</label>
+                    <input type="text" id="edit-profile-handle" class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Creator Bio</label>
+                    <input type="text" id="edit-profile-bio" class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Current Status</label>
+                    <input type="text" id="edit-profile-status" class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeModal('modal-edit-profile')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Cancel</button>
+                <button onclick="saveProfileChanges()" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold rounded-xl shadow-md">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD IDEA MODAL -->
+    <div id="modal-add-idea" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sky-950/40 backdrop-blur-sm hidden">
+        <div class="cloud-card-solid max-w-md w-full p-6 space-y-4">
+            <h3 class="font-serif text-xl font-bold text-sky-950">Save Idea Under the Sun ☀️💡</h3>
+            <form onsubmit="handleSaveIdea(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Idea Title</label>
+                    <input type="text" id="idea-title" required placeholder="e.g. Study Week Reset Vlog" class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Category / Topic</label>
+                    <input type="text" id="idea-category" required placeholder="e.g. Personal / Vlog" class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Idea Description</label>
+                    <textarea id="idea-desc" rows="3" placeholder="Notes on inspiration, shots, or concepts..." class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400 resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Status</label>
+                    <select id="idea-status" class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                        <option value="💡 New Idea">💡 New Idea</option>
+                        <option value="🔎 Researching">🔎 Researching</option>
+                        <option value="✍️ Writing">✍️ Writing</option>
+                        <option value="🎬 Creating">🎬 Creating</option>
+                        <option value="☀️ Published">☀️ Published</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('modal-add-idea')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-amber-950 text-xs font-bold rounded-xl shadow-md">Save Idea</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADD DIARY ENTRY MODAL -->
+    <div id="modal-add-diary" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sky-950/40 backdrop-blur-sm hidden">
+        <div class="cloud-card-solid max-w-lg w-full p-6 space-y-4">
+            <h3 class="font-serif text-xl font-bold text-sky-950">New Sky Diary Page ☁️📖</h3>
+            <form onsubmit="handleSaveDiary(event)" class="space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Title</label>
+                        <input type="text" id="diary-title" required placeholder="Entry Title..." class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Topic</label>
+                        <input type="text" id="diary-topic" required placeholder="Subject..." class="w-full bg-white border border-sky-100 rounded-xl p-2.5 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Journal Notes & Reflection</label>
+                    <textarea id="diary-notes" rows="5" required placeholder="What did you work on today? How did it feel?" class="w-full bg-white border border-sky-100 rounded-xl p-3 text-sm text-slate-800 outline-none focus:ring-2 focus:ring-sky-400 resize-none font-hand text-lg"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('modal-add-diary')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold rounded-xl shadow-md">Save Diary Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RESET CONFIRMATION MODAL -->
+    <div id="modal-reset-confirm" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sky-950/50 backdrop-blur-md hidden">
+        <div class="cloud-card-solid max-w-sm w-full p-6 text-center space-y-4">
+            <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 mx-auto">
+                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-slate-900">Are you sure?</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+                This action will completely remove your saved creator data from this browser session.
+            </p>
+            <div class="flex justify-center gap-3 pt-2">
+                <button onclick="closeModal('modal-reset-confirm')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Cancel</button>
+                <button onclick="confirmResetEverything()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-md">Reset Everything</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION LOGIC (DATA & INTERACTION CONTROLLER) -->
+    <script>
+        const ALL_PLATFORMS = ['YouTube', 'YouTube Shorts', 'Instagram', 'Facebook', 'TikTok', 'Pinterest', 'Blog', 'Other'];
+
+        const MOTIVATIONAL_QUOTES = [
+            "Small progress is still progress.",
+            "You showed up. That matters.",
+            "One idea can become something beautiful.",
+            "Create first. Perfect later.",
+            "Your little project deserves your time.",
+            "Keep going, sunshine."
+        ];
+
+        // DEMO INITIAL STATE
+        const INITIAL_STATE = {
+            profile: {
+                name: "Shahanaj Jim",
+                handle: "@shahufics",
+                bio: "Writer • Creator • HSC Student",
+                status: "Currently creating something new ☀️",
+                avatar: "https://placehold.co/150x150/bae6fd/0369a1?text=Shahanaj"
+            },
+            monthlyGoal: 25,
+            dailyNote: "Today I want to finish my physics carousel draft and review notes.",
+            contentEntries: [
+                { id: 'c1', title: 'History of Vectors', topic: 'Physics', date: '2026-09-16', status: '☀️ Published', platforms: ['Instagram', 'YouTube'] },
+                { id: 'c2', title: 'Why Avogadro\'s Number Has His Name', topic: 'Science', date: '2026-09-15', status: '🎬 Creating', platforms: ['YouTube Shorts', 'TikTok'] },
+                { id: 'c3', title: 'Study Week Reset Vlog', topic: 'Personal', date: '2026-09-14', status: '💡 Idea', platforms: ['YouTube', 'Blog'] },
+                { id: 'c4', title: 'Organic Chemistry Roadmap', topic: 'Chemistry', date: '2026-09-12', status: '☀️ Published', platforms: ['Instagram', 'Pinterest'] }
+            ],
+            ideas: [
+                { id: 'i1', title: 'Study Week Reset', category: 'Personal', desc: 'Vlog and aesthetic routine setup for HSC prep.', status: '💡 New Idea', date: '2026-09-16' },
+                { id: 'i2', title: 'Calculus Concept Map', category: 'Math', desc: 'Visual breakdown of integrals.', status: '🔎 Researching', date: '2026-09-10' }
+            ],
+            diaryEntries: [
+                { id: 'd1', title: 'First Sunshine Entry', topic: 'Mindset', date: '2026-09-16', notes: 'Spent two hours illustrating vectors for the upcoming carousel. Really happy with the color palette!' }
+            ]
+        };
+
+        let appState = {};
+        let currentCalDate = new Date(2026, 8, 16); // Sept 2026 Default
+
+        // APPLICATION INIT
+        window.onload = function() {
+            loadState();
+            renderDateHeader();
+            renderPlatformCheckboxes();
+            renderDashboard();
+            renderContentList();
+            renderIdeas();
+            renderDiaryList();
+            renderCalendar();
+            renderProgressStats();
+            renderProfile();
+            refreshSunshineQuote();
+
+            // Initialize Lucide Icons
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        };
+
+        // LOCAL STORAGE LOAD & SAVE
+        function loadState() {
+            const saved = localStorage.getItem('creator_sky_app_data');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch(e) {
+                    appState = JSON.parse(JSON.stringify(INITIAL_STATE));
+                }
+            } else {
+                appState = JSON.parse(JSON.stringify(INITIAL_STATE));
+                saveState();
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('creator_sky_app_data', JSON.stringify(appState));
+        }
+
+        // NAVIGATION LOGIC
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+            const target = document.getElementById(`view-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            // Desktop active state
+            document.querySelectorAll('#desktop-nav .nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('bg-sky-100/80', 'text-sky-900', 'shadow-sm');
+                    btn.classList.remove('text-slate-600', 'hover:bg-white/60');
+                } else {
+                    btn.classList.remove('bg-sky-100/80', 'text-sky-900', 'shadow-sm');
+                    btn.classList.add('text-slate-600', 'hover:bg-white/60');
+                }
+            });
+
+            // Mobile active state
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-tab-mobile') === tabId) {
+                    btn.classList.add('bg-sky-100', 'text-sky-600');
+                    btn.classList.remove('text-slate-500');
+                } else {
+                    btn.classList.remove('bg-sky-100', 'text-sky-600');
+                    btn.classList.add('text-slate-500');
+                }
+            });
+        }
+
+        // DATE DISPLAY
+        function renderDateHeader() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const todayStr = new Date().toLocaleDateString('en-US', options);
+            document.getElementById('current-date-str').textContent = todayStr;
+        }
+
+        // DASHBOARD COMPONENT RENDER
+        function renderDashboard() {
+            const publishedCount = appState.contentEntries.filter(e => e.status === '☀️ Published').length;
+            const inProgressCount = appState.contentEntries.filter(e => e.status !== '☀️ Published' && e.status !== '💡 Idea').length;
+            const ideasCount = appState.ideas.length;
+
+            document.getElementById('dash-completed-count').textContent = publishedCount;
+            document.getElementById('dash-in-progress-count').textContent = inProgressCount;
+            document.getElementById('dash-ideas-count').textContent = ideasCount;
+            document.getElementById('dash-goal-text').textContent = `${publishedCount} / ${appState.monthlyGoal}`;
+            document.getElementById('goal-target-subtext').textContent = `Goal: ${appState.monthlyGoal} Posts`;
+
+            // Percentage Circle Calculation
+            const pct = Math.min(100, Math.round((publishedCount / (appState.monthlyGoal || 1)) * 100));
+            document.getElementById('sun-percentage-text').textContent = `${pct}%`;
+            document.getElementById('sun-fraction-text').textContent = `${publishedCount}/${appState.monthlyGoal} POSTS`;
+
+            const circle = document.getElementById('sun-progress-circle');
+            circle.setAttribute('stroke-dasharray', `${pct}, 100`);
+
+            // Daily Note
+            document.getElementById('daily-note-input').value = appState.dailyNote || '';
+
+            // Streak Calc
+            const streak = calculateStreak();
+            document.getElementById('sidebar-streak').textContent = `${streak} Days`;
+        }
+
+        // PLATFORM CHECKBOXES GENERATOR
+        function renderPlatformCheckboxes() {
+            const container = document.getElementById('qc-platforms-container');
+            container.innerHTML = ALL_PLATFORMS.map(platform => `
+                <label class="platform-checkbox cursor-pointer">
+                    <input type="checkbox" name="platform" value="${platform}" class="hidden">
+                    <div class="px-3 py-1.5 rounded-xl border border-sky-200 bg-white/70 text-xs font-bold text-sky-900 transition flex items-center gap-1.5 select-none hover:bg-white">
+                        <span>✨</span> ${platform}
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        // QUICK ADD CONTENT HANDLER
+        function handleQuickAddContent(e) {
+            e.preventDefault();
+            const title = document.getElementById('qc-title').value.trim();
+            const topic = document.getElementById('qc-topic').value.trim();
+            const status = document.getElementById('qc-status').value;
+
+            const selectedPlatforms = Array.from(document.querySelectorAll('input[name="platform"]:checked')).map(cb => cb.value);
+
+            const newEntry = {
+                id: 'c_' + Date.now(),
+                title,
+                topic,
+                date: new Date().toISOString().split('T')[0],
+                status,
+                platforms: selectedPlatforms.length ? selectedPlatforms : ['Other']
+            };
+
+            appState.contentEntries.unshift(newEntry);
+            saveState();
+            renderDashboard();
+            renderContentList();
+            renderProgressStats();
+            renderCalendar();
+
+            // Reset form
+            document.getElementById('quick-content-form').reset();
+            renderPlatformCheckboxes();
+        }
+
+        // DAILY NOTE SAVE HANDLER
+        function saveDailyNote() {
+            const noteText = document.getElementById('daily-note-input').value;
+            appState.dailyNote = noteText;
+            saveState();
+            const indicator = document.getElementById('note-saved-indicator');
+            indicator.textContent = 'Saving...';
+            setTimeout(() => { indicator.textContent = 'Auto-saved'; }, 600);
+        }
+
+        // SUNSHINE MOTIVATIONAL QUOTE
+        function refreshSunshineQuote() {
+            const rand = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
+            document.getElementById('sunshine-quote').textContent = `"${rand}"`;
+        }
+
+        // CONTENT TRACKER RENDERER
+        function renderContentList() {
+            const container = document.getElementById('content-list-container');
+            const search = (document.getElementById('content-search')?.value || '').toLowerCase();
+            const statusFilter = document.getElementById('content-status-filter')?.value || 'ALL';
+
+            let filtered = appState.contentEntries.filter(entry => {
+                const matchesSearch = entry.title.toLowerCase().includes(search) || entry.topic.toLowerCase().includes(search);
+                const matchesStatus = statusFilter === 'ALL' || entry.status === statusFilter;
+                return matchesSearch && matchesStatus;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 cloud-card bg-white/40">
+                        <div class="text-4xl mb-2">☀️</div>
+                        <h4 class="font-serif text-lg font-bold text-sky-950">Your sky is clear</h4>
+                        <p class="text-xs text-slate-500 mb-4">Maybe today is where your next creation begins.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => `
+                <div class="cloud-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/80">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-sm text-slate-900">${escapeHtml(item.title)}</span>
+                            <span class="px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 text-[10px] font-extrabold uppercase">${escapeHtml(item.topic)}</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                            <span>📅 ${item.date}</span>
+                            <span>•</span>
+                            <div class="flex gap-1">
+                                ${item.platforms.map(p => `<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold text-[10px]">${p}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${item.status === '☀️ Published' ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-sky-100 text-sky-900'}">${item.status}</span>
+                        <button onclick="deleteContent('${item.id}')" class="text-rose-400 hover:text-rose-600 transition p-1">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function deleteContent(id) {
+            appState.contentEntries = appState.contentEntries.filter(e => e.id !== id);
+            saveState();
+            renderDashboard();
+            renderContentList();
+            renderProgressStats();
+            renderCalendar();
+        }
+
+        // IDEAS BOARD RENDERER
+        function renderIdeas() {
+            const grid = document.getElementById('ideas-grid');
+            if (appState.ideas.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 cloud-card bg-white/40">
+                        <div class="text-4xl mb-2">💡</div>
+                        <h4 class="font-serif text-lg font-bold text-sky-950">Nothing floating in the clouds yet</h4>
+                        <p class="text-xs text-slate-500 mb-4">Save an idea to start planning your next creation.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = appState.ideas.map(idea => `
+                <div class="cloud-card p-5 bg-gradient-to-br from-white/90 to-amber-50/70 border-amber-200/50 flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="flex items-start justify-between">
+                            <h4 class="font-serif text-lg font-bold text-sky-950">${escapeHtml(idea.title)}</h4>
+                            <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold">${idea.status}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">${escapeHtml(idea.desc || 'No additional description.')}</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-amber-100/60 text-xs">
+                        <span class="font-bold text-sky-700">🌱 ${escapeHtml(idea.category)}</span>
+                        <button onclick="deleteIdea('${idea.id}')" class="text-rose-400 hover:text-rose-600">
+                            <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function handleSaveIdea(e) {
+            e.preventDefault();
+            const newIdea = {
+                id: 'i_' + Date.now(),
+                title: document.getElementById('idea-title').value.trim(),
+                category: document.getElementById('idea-category').value.trim(),
+                desc: document.getElementById('idea-desc').value.trim(),
+                status: document.getElementById('idea-status').value,
+                date: new Date().toISOString().split('T')[0]
+            };
+            appState.ideas.unshift(newIdea);
+            saveState();
+            renderDashboard();
+            renderIdeas();
+            closeModal('modal-add-idea');
+        }
+
+        function deleteIdea(id) {
+            appState.ideas = appState.ideas.filter(i => i.id !== id);
+            saveState();
+            renderDashboard();
+            renderIdeas();
+        }
+
+        // DIARY RENDERER
+        function renderDiaryList() {
+            const container = document.getElementById('diary-list');
+            const search = (document.getElementById('diary-search')?.value || '').toLowerCase();
+
+            const filtered = appState.diaryEntries.filter(d => 
+                d.title.toLowerCase().includes(search) || 
+                d.notes.toLowerCase().includes(search) || 
+                d.topic.toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 cloud-card bg-white/40">
+                        <div class="text-4xl mb-2">📖</div>
+                        <h4 class="font-serif text-lg font-bold text-sky-950">Your Sky Diary is empty</h4>
+                        <p class="text-xs text-slate-500 mb-4">Write your thoughts and document your progress.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(d => `
+                <div class="cloud-card p-6 bg-white/90 space-y-3">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider">${d.date} • ${escapeHtml(d.topic)}</span>
+                            <h3 class="font-serif text-xl font-bold text-sky-950 mt-0.5">${escapeHtml(d.title)}</h3>
+                        </div>
+                        <button onclick="deleteDiary('${d.id}')" class="text-rose-400 hover:text-rose-600">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="font-hand text-xl text-slate-700 leading-relaxed bg-indigo-50/40 p-4 rounded-2xl border border-indigo-100/50">${escapeHtml(d.notes)}</p>
+                </div>
+            `).join('');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function handleSaveDiary(e) {
+            e.preventDefault();
+            const entry = {
+                id: 'd_' + Date.now(),
+                title: document.getElementById('diary-title').value.trim(),
+                topic: document.getElementById('diary-topic').value.trim(),
+                notes: document.getElementById('diary-notes').value.trim(),
+                date: new Date().toISOString().split('T')[0]
+            };
+            appState.diaryEntries.unshift(entry);
+            saveState();
+            renderDiaryList();
+            closeModal('modal-add-diary');
+        }
+
+        function deleteDiary(id) {
+            appState.diaryEntries = appState.diaryEntries.filter(d => d.id !== id);
+            saveState();
+            renderDiaryList();
+        }
+
+        // CALENDAR RENDERER
+        function renderCalendar() {
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const year = currentCalDate.getFullYear();
+            const month = currentCalDate.getMonth();
+
+            document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            const grid = document.getElementById('calendar-days-grid');
+            grid.innerHTML = '';
+
+            // Blank Days
+            for (let i = 0; i < firstDay; i++) {
+                grid.innerHTML += `<div class="h-20 bg-white/20 rounded-2xl"></div>`;
+            }
+
+            // Month Days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // Matches
+                const published = appState.contentEntries.filter(e => e.date === dateStr && e.status === '☀️ Published');
+                const inProg = appState.contentEntries.filter(e => e.date === dateStr && e.status !== '☀️ Published');
+                
+                grid.innerHTML += `
+                    <div onclick="selectCalDate('${dateStr}')" class="h-20 cloud-card p-2 bg-white/70 hover:bg-white cursor-pointer transition flex flex-col justify-between overflow-hidden">
+                        <span class="text-xs font-extrabold text-slate-700">${day}</span>
+                        <div class="space-y-1">
+                            ${published.length ? `<div class="text-[10px] bg-amber-200 text-amber-900 rounded px-1 font-bold truncate">☀️ ${published.length} Post</div>` : ''}
+                            ${inProg.length ? `<div class="text-[10px] bg-sky-200 text-sky-900 rounded px-1 font-bold truncate">✨ ${inProg.length} Task</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function changeMonth(delta) {
+            currentCalDate.setMonth(currentCalDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function goToCurrentMonth() {
+            currentCalDate = new Date(2026, 8, 16);
+            renderCalendar();
+        }
+
+        function selectCalDate(dateStr) {
+            const details = document.getElementById('calendar-day-details');
+            const entriesContainer = document.getElementById('cal-selected-entries');
+            document.getElementById('cal-selected-date-title').textContent = `Content on ${dateStr}`;
+
+            const entries = appState.contentEntries.filter(e => e.date === dateStr);
+
+            if (entries.length === 0) {
+                entriesContainer.innerHTML = `<p class="text-xs text-slate-500">No content activity recorded for this day.</p>`;
+            } else {
+                entriesContainer.innerHTML = entries.map(e => `
+                    <div class="p-3 bg-white/80 rounded-xl border border-sky-100 flex items-center justify-between">
+                        <div>
+                            <span class="font-bold text-sm text-sky-950">${escapeHtml(e.title)}</span>
+                            <span class="text-xs text-slate-500 block">${escapeHtml(e.topic)} • ${e.platforms.join(', ')}</span>
+                        </div>
+                        <span class="text-xs font-bold px-2 py-0.5 bg-sky-100 text-sky-800 rounded-full">${e.status}</span>
+                    </div>
+                `).join('');
+            }
+            details.classList.remove('hidden');
+        }
+
+        function closeCalDetails() {
+            document.getElementById('calendar-day-details').classList.add('hidden');
+        }
+
+        // PROGRESS & STATS RENDERER
+        function calculateStreak() {
+            const dates = Array.from(new Set(appState.contentEntries.map(e => e.date))).sort();
+            if (dates.length === 0) return 0;
+            return dates.length >= 5 ? 5 : dates.length; // Dynamic streak logic placeholder
+        }
+
+        function renderProgressStats() {
+            const total = appState.contentEntries.length + appState.ideas.length;
+            const streak = calculateStreak();
+
+            document.getElementById('prog-current-streak').textContent = `${streak} Days`;
+            document.getElementById('prog-longest-streak').textContent = `${Math.max(streak, 7)} Days`;
+            document.getElementById('prog-total-items').textContent = total;
+
+            // Platform Distribution
+            const counts = {};
+            ALL_PLATFORMS.forEach(p => counts[p] = 0);
+
+            appState.contentEntries.forEach(entry => {
+                entry.platforms.forEach(p => {
+                    if (counts[p] !== undefined) counts[p]++;
+                });
+            });
+
+            const maxVal = Math.max(...Object.values(counts), 1);
+            const container = document.getElementById('platform-stats-bars');
+
+            container.innerHTML = ALL_PLATFORMS.map(platform => {
+                const count = counts[platform];
+                const widthPct = Math.round((count / maxVal) * 100);
+                return `
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-bold text-sky-950">
+                            <span>☁️ ${platform}</span>
+                            <span>${count} posts</span>
+                        </div>
+                        <div class="w-full h-3 bg-sky-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-sky-400 to-blue-500 rounded-full transition-all duration-500" style="width: ${widthPct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // PROFILE CONTROLLER
+        function renderProfile() {
+            const p = appState.profile;
+            document.getElementById('profile-name-display').textContent = p.name;
+            document.getElementById('profile-handle-display').textContent = p.handle;
+            document.getElementById('profile-bio-display').textContent = p.bio;
+            document.getElementById('profile-status-display').textContent = `Status: ${p.status}`;
+            if (p.avatar) {
+                document.getElementById('profile-avatar-img').src = p.avatar;
+            }
+        }
+
+        function handleAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    appState.profile.avatar = evt.target.result;
+                    saveState();
+                    renderProfile();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveProfileChanges() {
+            appState.profile.name = document.getElementById('edit-profile-name').value;
+            appState.profile.handle = document.getElementById('edit-profile-handle').value;
+            appState.profile.bio = document.getElementById('edit-profile-bio').value;
+            appState.profile.status = document.getElementById('edit-profile-status').value;
+            saveState();
+            renderProfile();
+            closeModal('modal-edit-profile');
+        }
+
+        // MODAL HELPERS
+        function openEditProfileModal() {
+            document.getElementById('edit-profile-name').value = appState.profile.name;
+            document.getElementById('edit-profile-handle').value = appState.profile.handle;
+            document.getElementById('edit-profile-bio').value = appState.profile.bio;
+            document.getElementById('edit-profile-status').value = appState.profile.status;
+            document.getElementById('modal-edit-profile').classList.remove('hidden');
+        }
+
+        function editGoalModal() {
+            document.getElementById('input-goal-number').value = appState.monthlyGoal;
+            document.getElementById('modal-edit-goal').classList.remove('hidden');
+        }
+
+        function saveGoalTarget() {
+            const val = parseInt(document.getElementById('input-goal-number').value, 10);
+            if (val > 0) {
+                appState.monthlyGoal = val;
+                saveState();
+                renderDashboard();
+                closeModal('modal-edit-goal');
+            }
+        }
+
+        function openAddIdeaModal() { document.getElementById('modal-add-idea').classList.remove('hidden'); }
+        function openAddDiaryModal() { document.getElementById('modal-add-diary').classList.remove('hidden'); }
+        function openAddContentModal() { switchTab('dashboard'); }
+        function openResetModal() { document.getElementById('modal-reset-confirm').classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        // EXPORT & IMPORT DATA
+        function exportUserData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `creator_sky_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+
+        function triggerImport() {
+            document.getElementById('import-file-input').click();
+        }
+
+        function importUserData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const parsed = JSON.parse(evt.target.result);
+                    if (parsed && parsed.profile) {
+                        appState = parsed;
+                        saveState();
+                        location.reload();
+                    } else {
+                        alert("Invalid backup file format.");
+                    }
+                } catch(err) {
+                    alert("Could not parse JSON file.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function confirmResetEverything() {
+            localStorage.removeItem('creator_sky_app_data');
+            appState = JSON.parse(JSON.stringify(INITIAL_STATE));
+            saveState();
+            location.reload();
+        }
+
+        // UTILITY ESCAPE
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
